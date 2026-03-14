@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEdge, type Connection } from '@xyflow/react';
+import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEdge, type Connection, Background, Controls } from '@xyflow/react';
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
@@ -69,28 +69,31 @@ export default function App() {
   );
 
   return (
-    <ReactFlowProvider>
-      {/* toolbar sits above canvas using absolute positioning */}
-      <div style={{ position: 'absolute', zIndex: 10, padding: '10px', display: 'flex', gap: '8px' }}>
-        <button onClick={addEventNode}>+ Event Node</button>
-        <button onClick={addActionNode}>+ Action Node</button>
-        <button onClick={showCode}>Show Code</button>
-        <button onClick={generator.testSave}>Save Project</button>
-      </div>
+      <ReactFlowProvider>
+        {/* toolbar sits above canvas using absolute positioning */}
+        <div style={{ position: 'absolute', zIndex: 10, padding: '10px', display: 'flex', gap: '8px' }}>
+          <button onClick={addEventNode}>+ Event Node</button>
+          <button onClick={addActionNode}>+ Action Node</button>
+          <button onClick={showCode}>Show Code</button>
+          <button onClick={generator.testSave}>Save Project</button>
+        </div>
 
-      <div style={{ width: '100vw', height: '100vh' }}>
-        <ReactFlow
-          nodeTypes={nodeTypes}
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          isValidConnection={isValidConnection}
-          fitView
-        />
-      </div>
-    </ReactFlowProvider>
+        <div style={{ height: '100vh' }}>
+          <ReactFlow
+            nodeTypes={nodeTypes}
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            isValidConnection={isValidConnection}
+            fitView
+          >
+            <Background />
+            <Controls />
+          </ReactFlow>
+        </div>
+      </ReactFlowProvider>
 
   )
 }
