@@ -75,7 +75,7 @@ export default function App() {
         <button onClick={addEventNode}>+ Event Node</button>
         <button onClick={addActionNode}>+ Action Node</button>
         <button onClick={showCode}>Show Code</button>
-        <button onClick={CodeGenerator.getInstance().save}>Save Project</button>
+        <button onClick={generator.testSave}>Save Project</button>
       </div>
 
       <div style={{ width: '100vw', height: '100vh' }}>

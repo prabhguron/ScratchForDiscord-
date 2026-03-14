@@ -47,8 +47,13 @@ export class CodeGenerator {
         URL.revokeObjectURL(url);
     }
 
+    testSave = () => {
+        this.createCommandFile("testing", "test", "A testing command", "await interaction.reply('testing');");
+        this.save();
+    }
+
     public getDiscordBoilerplateCode() {
-        const sourceFile = this.project.createSourceFile(`${projectPath}/discord.ts`, undefined, { overwrite: true });
+        const sourceFile = this.project.createSourceFile(`${projectPath}/main.ts`, undefined, { overwrite: true });
 
         sourceFile.addImportDeclarations([
             { defaultImport: "{dirname, importx}", moduleSpecifier: "@discordx/importer" },
@@ -125,7 +130,7 @@ export class CodeGenerator {
             name: "Slash"
         });
         slashDecorator.setIsDecoratorFactory(true);
-        slashDecorator.addTypeArgument(`{\ndescription: ${description},\nname: ${commandName}`);
+        slashDecorator.addArgument(`{\ndescription: '${description}',\nname: '${commandName}'}`);
 
         funcDeclaration.addStatements(body);
 
