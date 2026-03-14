@@ -1,4 +1,4 @@
-import { Project, Scope, SourceFile } from "ts-morph";
+import { Project, Scope, VariableDeclarationKind } from "ts-morph";
 
 export class CodeGenerator {
     private static instance: CodeGenerator | null = null
@@ -10,29 +10,66 @@ export class CodeGenerator {
         return this.instance;
     }
 
-    public getTestCode() {
+    public getDiscordBoilerplateCode() {
+
         const project = new Project({
             useInMemoryFileSystem: true
         });
-        const sourceFile = project.createSourceFile(`./target/file.ts`);
 
-        const classDeclaration = sourceFile.addClass({
-            name: 'SomeClass'
+        const sourceFile = project.createSourceFile("./target/discord.ts");
+
+        sourceFile.addImportDeclarations([
+            {
+                defaultImport: "{dirname, importx}",
+                moduleSpecifier: "@discordx/importer"
+            },
+            {
+                defaultImport: "{ IntentsBitField, type Interaction, type Message }",
+                moduleSpecifier: "discord.js"
+            },
+            {
+                defaultImport: "{Client}",
+                moduleSpecifier: "discordx"
+            },
+            {
+                defaultImport: "* as dotenv",
+                moduleSpecifier: "dotenv"
+            }
+        ]);
+
+        sourceFile.addStatements("\ndotenv.config();");
+
+
+        sourceFile.addVariableStatement({
+            declarationKind: VariableDeclarationKind.Const,
+            declarations: [{
+                name: "bot",
+                initializer: "new Client({\nintents: [\nIntentsBitField.Flags.Guilds,\n " +
+                    "IntentsBitField.Flags.GuildMessages,\nIntentsBitField.Flags.GuildMessageReactions,\n" +
+                    "IntentsBitField.Flags.MessageContent,\n],\nsilent: false,\n simpleCommand: {\nprefix: '!',\n},\n});",
+                type: "Client"
+            }]
         });
 
-        const constr = classDeclaration.addConstructor({});
+        sourceFile.addStatements("\nbot.once('clientReady', () => {\nvoid bot.initApplicationCommands();\n});\n");
+        sourceFile.addStatements("\nbot.on('interactionCreate', (interaction: Interaction) => {\nbot.executeInteraction(interaction);\n});\n");
+        sourceFile.addStatements("\nbot.on('messageCreate', (message: Message) => {\nvoid bot.executeCommand(message);\n});\n");
 
-        constr.setBodyText('this.myProp = myProp');
-
-        classDeclaration.addProperty({
-            name: 'myProp',
-            type: 'string',
-            initializer: 'hello world!',
-            scope: Scope.Public
+        const runFunction = sourceFile.addFunction({
+            name: "run",
+            isAsync: true,
         });
+
+        runFunction.addBody();
+        runFunction.addStatements("await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`);\n" +
+            "if (!process.env.BOT_TOKEN) {throw Error('Could not find BOT_TOKEN in your environment');}\n" +
+            "await bot.login(process.env.BOT_TOKEN);");
+
+        sourceFile.addStatements("\nvoid run();");
+
         sourceFile.formatText();
-        console.log(sourceFile.getText());
-        
+
+        return sourceFile.getText();
     }
 
 
