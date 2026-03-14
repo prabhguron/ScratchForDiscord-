@@ -1,12 +1,18 @@
 import { useState, useCallback } from 'react';
-import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
+import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEdge, type Connection } from '@xyflow/react';
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
+import { ActionNodeComponent } from './Ui/ActionNodeComponent';
 
 //nodeTypes tells React Flow which component to use for each node type
 // key must match the 'type' field on the node object
 const nodeTypes = {
-  eventNode: EventNodeComponent
+  eventNode: EventNodeComponent,
+  actionNode: ActionNodeComponent
+}
+
+function isValidConnection(connection: Connection) {
+	return connection.source !== connection.target
 }
 
 // empty to start nodes are added via buttons
@@ -18,16 +24,27 @@ export default function App() {
   const [edges, setEdges] = useState(initialEdges);
 
   //button when this clicked we addnos
-const addEventNode = () => {
-  const newNode = {
-    id: crypto.randomUUID(),
-    type: 'eventNode',
-    position: { x: 100, y: 100 },
-    data: { keyword: '' }
+  const addEventNode = () => {
+    const newNode = {
+      id: crypto.randomUUID(),
+      type: 'eventNode',
+      position: { x: 100, y: 100 },
+      data: { keyword: '' }
+    }
+    setNodes((prev) => [...prev, newNode])
+    console.log('nodes after add:', nodes.length)
   }
-  setNodes((prev) => [...prev, newNode])
-  console.log('nodes after add:', nodes.length)
-}
+
+  const addActionNode = () => {
+    const newNode = {
+      id: crypto.randomUUID(),
+      type: 'actionNode',
+      position: { x: 100, y: 100 },
+      data: { keyword: '' }
+    }
+    setNodes((prev) => [...prev, newNode])
+    console.log('nodes after add:', nodes.length)
+  }
 
   const onNodesChange = useCallback(
     (changes) => setNodes((prev) => applyNodeChanges(changes, prev)),
@@ -47,6 +64,7 @@ const addEventNode = () => {
       {/* toolbar sits above canvas using absolute positioning */}
       <div style={{ position: 'absolute', zIndex: 10, padding: '10px', display: 'flex', gap: '8px' }}>
         <button onClick={addEventNode}>+ Event Node</button>
+        <button onClick={addActionNode}>+ Action Node</button>
       </div>
 
       <div style={{ width: '100vw', height: '100vh' }}>
@@ -57,6 +75,7 @@ const addEventNode = () => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          isValidConnection={isValidConnection}
           fitView
         />
       </div>

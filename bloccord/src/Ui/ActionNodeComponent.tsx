@@ -1,26 +1,28 @@
 import { Handle, Position, useReactFlow, type NodeProps } from '@xyflow/react'
 import { useState } from 'react'
 
+
+
 //from what i understand type=source outpint type=target input
-export function EventNodeComponent({ data, id }: NodeProps) {
+export function ActionNodeComponent({ data, id }: NodeProps) {
 
   const [keyword, setKeyword] = useState('')
   const { updateNodeData } = useReactFlow()
   return (
     <div>
-
-      <p>Data Event Please type your keyword command</p>
+      <Handle type="target" isConnectableStart={false} position={Position.Top}/>
+      <p>Action</p>
       <input
         value={keyword}
         onChange={(e) => {
           setKeyword(e.target.value)
           updateNodeData(id, { keyword: e.target.value })
         }}
-        placeholder="Type command e.g. /baby"
+        placeholder="Type keyword"
       />
 
-
-      <Handle type="source" position={Position.Bottom} />
+        
+      <Handle type="source" isConnectableEnd={false} position={Position.Bottom} />
     </div>
   )
 }
