@@ -2,8 +2,16 @@ import { Project, VariableDeclarationKind } from "ts-morph";
 import { getConnectedPairs } from './getConnectedPairs'
 import type { Node, Edge } from '@xyflow/react'
 
+const projectPath = "./target"
+const commandPath = `${projectPath}/commands`
+
 export class CodeGenerator {
     private static instance: CodeGenerator | null = null
+    public readonly project: Project = new Project({
+        useInMemoryFileSystem: true,
+
+    });
+
     private constructor() { }
 
     public static getInstance(): CodeGenerator {
@@ -12,18 +20,24 @@ export class CodeGenerator {
         return this.instance;
     }
 
+    public save() {
+        if (this.project === undefined || this.project === null) {
+            console.log("Huh?");
+            return;
+        }
+    }
+
     // call this when user clicks "Generate Code"
     // example: CodeGenerator.getInstance().generateBotCode(nodes, edges)
     public generateBotCode(nodes: Node[], edges: Edge[]) {
         const pairs = getConnectedPairs(nodes, edges)
         console.log('connected pairs:', pairs)
         //  builds code generation from pairs here
-        
+
     }
 
     public getDiscordBoilerplateCode() {
-        const project = new Project({ useInMemoryFileSystem: true });
-        const sourceFile = project.createSourceFile("./target/discord.ts");
+        const sourceFile = this.project.createSourceFile(`${projectPath}/discord.ts`, undefined, { overwrite: true });
 
         sourceFile.addImportDeclarations([
             { defaultImport: "{dirname, importx}", moduleSpecifier: "@discordx/importer" },
@@ -60,6 +74,58 @@ export class CodeGenerator {
         sourceFile.formatText();
         return sourceFile.getText();
     }
+
+    public createCommandFile(name: string, commandName: string, description: string, body: string) {
+
+        const sourceFile = this.project.createSourceFile(`${commandPath}/${name}.ts`, undefined, { overwrite: true });
+        sourceFile.addImportDeclarations([
+            {
+                defaultImport: "{Discord, Slash}",
+                moduleSpecifier: "discordx"
+            },
+            {
+                defaultImport: "{type CommandInteraction}",
+                moduleSpecifier: "discord.js"
+            }
+        ]);
+
+        const className = name.charAt(0).toUpperCase() + name.substring(1);
+
+        const slashClass = sourceFile.addClass({
+            name: `Slash${className}`,
+            isExported: true
+        });
+
+        const discordDecorator = slashClass.addDecorator({
+            name: "Discord",
+        });
+        discordDecorator.setIsDecoratorFactory(true);
+
+        const funcDeclaration = slashClass.addMethod({
+            name: name,
+            parameters: [{
+                name: "interaction",
+                type: "CommandInteraction"
+            }],
+            returnType: "Promise<void>",
+            isAsync: true
+        });
+        const slashDecorator = funcDeclaration.addDecorator({
+            name: "Slash"
+        });
+        slashDecorator.setIsDecoratorFactory(true);
+        slashDecorator.addTypeArgument(`{\ndescription: ${description},\nname: ${commandName}`);
+
+        funcDeclaration.addStatements(body);
+
+        sourceFile.formatText();
+        sourceFile.save();
+
+        return sourceFile.getText();
+
+
+    }
+
 }
 
-chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]
+//chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]

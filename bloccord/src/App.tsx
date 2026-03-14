@@ -3,7 +3,7 @@ import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEd
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
-import { CodeGenerator } from "./codeGenerator/CodeGenerator"
+import { CodeGenerator } from "./nodeClassOOPS/CodeGenerator"
 import { getOrderedChain } from './codeGenerator/getConnectedChains';
 
 //nodeTypes tells React Flow which component to use for each node type
@@ -47,13 +47,13 @@ export default function App() {
     setNodes((prev) => [...prev, newNode])
     console.log('nodes after add:', nodes.length)
   }
-
+  const generator = CodeGenerator.getInstance();
   const showCode = () => {
-  CodeGenerator.getInstance().generateBotCode(nodes, edges)
-  const boilerplate = CodeGenerator.getInstance().getDiscordBoilerplateCode()
-  window.alert(boilerplate)
-  console.log(getOrderedChain(nodes, edges))
-}
+    generator.generateBotCode(nodes, edges)
+    const boilerplate = CodeGenerator.getInstance().getDiscordBoilerplateCode()
+    window.alert(boilerplate)
+    console.log(getOrderedChain(nodes, edges))
+  }
 
   const onNodesChange = useCallback(
     (changes) => setNodes((prev) => applyNodeChanges(changes, prev)),
@@ -75,6 +75,7 @@ export default function App() {
         <button onClick={addEventNode}>+ Event Node</button>
         <button onClick={addActionNode}>+ Action Node</button>
         <button onClick={showCode}>Show Code</button>
+        <button onClick={CodeGenerator.getInstance().save}>Save Project</button>
       </div>
 
       <div style={{ width: '100vw', height: '100vh' }}>
