@@ -1,12 +1,12 @@
-export abstract class BaseNode<T> {       
+export abstract class BaseNode<T> {
   id: string
   label: string
   version: number
-  data: T               
+  data: T
 
 
-//id is gonna be like node-1 that's just how react flow is 
-//this is gonna be like the base Node for the rest of the nodes 
+  //id is gonna be like node-1 that's just how react flow is 
+  //this is gonna be like the base Node for the rest of the nodes 
   constructor(id: string, label: string, version: number, data: T) {
     this.id = id
     this.label = label
@@ -15,7 +15,7 @@ export abstract class BaseNode<T> {
   }
 
 
-//this is for generating code because all nodes generate different coe
+  //this is for generating code because all nodes generate different coe
   abstract generateCode(): string
 
 }

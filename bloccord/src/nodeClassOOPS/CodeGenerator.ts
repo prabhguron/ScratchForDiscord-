@@ -1,22 +1,26 @@
-import { Project, Scope, VariableDeclarationKind } from "ts-morph";
+import { Project, Scope, SourceFile, VariableDeclarationKind } from "ts-morph";
+
+const basePath = "./target";
+const commandPath = `${basePath}/commands`
 
 export class CodeGenerator {
-    private static instance: CodeGenerator | null = null
-    private constructor() { }
+    private static instance?: CodeGenerator
+    private readonly project: Project
+
+    private constructor() {
+        this.project = new Project({
+            useInMemoryFileSystem: true
+        });
+    }
 
     public static getInstance(): CodeGenerator {
-        if (this.instance == null)
+        if (this.instance == undefined)
             this.instance = new CodeGenerator();
         return this.instance;
     }
 
     public getDiscordBoilerplateCode() {
-
-        const project = new Project({
-            useInMemoryFileSystem: true
-        });
-
-        const sourceFile = project.createSourceFile("./target/discord.ts");
+        const sourceFile = this.project.createSourceFile(`${basePath}/discord.ts`);
 
         sourceFile.addImportDeclarations([
             {
@@ -68,9 +72,60 @@ export class CodeGenerator {
         sourceFile.addStatements("\nvoid run();");
 
         sourceFile.formatText();
+        sourceFile.save()
 
         return sourceFile.getText();
     }
 
+    public createCommandFile(name: string, commandName: string, description: string, body: string) {
+
+        const sourceFile = this.project.createSourceFile(`${commandPath}/${name}.ts`);
+        sourceFile.addImportDeclarations([
+            {
+                defaultImport: "{Discord, Slash}",
+                moduleSpecifier: "discordx"
+            },
+            {
+                defaultImport: "{type CommandInteraction}",
+                moduleSpecifier: "discord.js"
+            }
+        ]);
+
+        const className = name.charAt(0).toUpperCase() + name.substring(1);
+
+        const slashClass = sourceFile.addClass({
+            name: `Slash${className}`,
+            isExported: true
+        });
+
+        const discordDecorator = slashClass.addDecorator({
+            name: "Discord",
+        });
+        discordDecorator.setIsDecoratorFactory(true);
+
+        const funcDeclaration = slashClass.addMethod({
+            name: name,
+            parameters: [{
+                name: "interaction",
+                type: "CommandInteraction"
+            }],
+            returnType: "Promise<void>",
+            isAsync: true
+        });
+        const slashDecorator = funcDeclaration.addDecorator({
+            name: "Slash"
+        });
+        slashDecorator.setIsDecoratorFactory(true);
+        slashDecorator.addTypeArgument(`{\ndescription: ${description},\nname: ${commandName}`);
+
+        funcDeclaration.addStatements(body);
+
+        sourceFile.formatText();
+        sourceFile.save();
+
+        return sourceFile.getText();
+
+
+    }
 
 }
