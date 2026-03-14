@@ -3,7 +3,8 @@ import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEd
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
-import { CodeGenerator } from "./nodeClassOOPS/CodeGenerator"
+import { CodeGenerator } from "./codeGenerator/CodeGenerator"
+import { getOrderedChain } from './codeGenerator/getConnectedChains';
 
 //nodeTypes tells React Flow which component to use for each node type
 // key must match the 'type' field on the node object
@@ -48,9 +49,11 @@ export default function App() {
   }
 
   const showCode = () => {
-    const boilerplate = CodeGenerator.getInstance().getDiscordBoilerplateCode();
-    window.alert(boilerplate)
-  }
+  CodeGenerator.getInstance().generateBotCode(nodes, edges)
+  const boilerplate = CodeGenerator.getInstance().getDiscordBoilerplateCode()
+  window.alert(boilerplate)
+  console.log(getOrderedChain(nodes, edges))
+}
 
   const onNodesChange = useCallback(
     (changes) => setNodes((prev) => applyNodeChanges(changes, prev)),

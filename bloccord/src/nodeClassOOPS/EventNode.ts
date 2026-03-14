@@ -1,6 +1,6 @@
 import { BaseNode } from './BaseNode'
 
-export class EventNode extends BaseNode<{ keyword: String }> {
+export class EventNode extends BaseNode<{ keyword: string }> {
 
     //calls  BaseNode
     //Justice if you could please use a formatter mine doesnt work
