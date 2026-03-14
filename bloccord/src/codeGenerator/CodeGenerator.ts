@@ -1,6 +1,7 @@
 import { Project, VariableDeclarationKind } from "ts-morph";
-import { getConnectedPairs } from './getConnectedPairs'
+import { getOrderedChain } from './getConnectedChains'
 import type { Node, Edge } from '@xyflow/react'
+import {createNodeInstance} from './nodeFactory'
 
 export class CodeGenerator {
     private static instance: CodeGenerator | null = null
@@ -15,10 +16,21 @@ export class CodeGenerator {
     // call this when user clicks "Generate Code"
     // example: CodeGenerator.getInstance().generateBotCode(nodes, edges)
     public generateBotCode(nodes: Node[], edges: Edge[]) {
-        const pairs = getConnectedPairs(nodes, edges)
+        const pairs = getOrderedChain(nodes, edges)
         console.log('connected pairs:', pairs)
-        //  builds code generation from pairs here
+
+        for(let i =0; i < pairs.length; i++){
+
+            for(let j =0; j < pairs[i].length; j++){
+               const instance = createNodeInstance(pairs[i][j])
+                console.log(instance)
+                console.log(instance.generateCode())
+                    
+        }
+    }
         
+       
+
     }
 
     public getDiscordBoilerplateCode() {
@@ -62,4 +74,4 @@ export class CodeGenerator {
     }
 }
 
-chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]
+// chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]

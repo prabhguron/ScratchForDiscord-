@@ -6,17 +6,17 @@ import { useState } from 'react'
 //from what i understand type=source outpint type=target input
 export function ActionNodeComponent({ data, id }: NodeProps) {
 
-  const [keyword, setKeyword] = useState('')
+  const [response, setResponse] = useState('')
   const { updateNodeData } = useReactFlow()
   return (
     <div>
       <Handle type="target" isConnectableStart={false} position={Position.Top}/>
       <p>Action</p>
       <input
-        value={keyword}
+        value={response}
         onChange={(e) => {
-          setKeyword(e.target.value)
-          updateNodeData(id, { keyword: e.target.value })
+          setResponse(e.target.value)
+          updateNodeData(id, { response: e.target.value })
         }}
         placeholder="Type keyword"
       />

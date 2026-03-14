@@ -42,7 +42,7 @@ export default function App() {
       id: crypto.randomUUID(),
       type: 'actionNode',
       position: { x: 100, y: 100 },
-      data: { keyword: '' }
+      data: { response: '' }
     }
     setNodes((prev) => [...prev, newNode])
     console.log('nodes after add:', nodes.length)
