@@ -3,6 +3,7 @@ import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEd
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
+import {CodeGenerator} from "./nodeClassOOPS/CodeGenerator"
 
 //nodeTypes tells React Flow which component to use for each node type
 // key must match the 'type' field on the node object
@@ -11,7 +12,7 @@ const nodeTypes = {
   actionNode: ActionNodeComponent
 }
 
-function isValidConnection(connection: Connection) {
+function isValidConnection(connection: Connection): boolean {
 	return connection.source !== connection.target
 }
 
@@ -45,6 +46,7 @@ export default function App() {
     setNodes((prev) => [...prev, newNode])
     console.log('nodes after add:', nodes.length)
   }
+  
 
   const onNodesChange = useCallback(
     (changes) => setNodes((prev) => applyNodeChanges(changes, prev)),
@@ -58,6 +60,8 @@ export default function App() {
     (params) => setEdges((prev) => addEdge(params, prev)),
     [],
   );
+
+  CodeGenerator.getInstance().getTestCode();
 
   return (
     <ReactFlowProvider>
@@ -80,5 +84,6 @@ export default function App() {
         />
       </div>
     </ReactFlowProvider>
+
   )
 }
