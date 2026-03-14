@@ -11,8 +11,7 @@ export class EventNode extends BaseNode<{ keyword: string }> {
 
     //if like the user types /baby this and we can later pass this into action node 
     generateCode() {
-
-        return `if (message.content === '${this.data.keyword}') {`
+        return this.data.keyword;
     }
 
 

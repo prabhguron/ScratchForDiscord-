@@ -10,9 +10,7 @@ export class ActionNode extends BaseNode<{response:string}>{
 }
 
     generateCode(): string {
-
-        
-        return `message.reply('${this.data.response}')`
+        return `await interaction.reply('${this.data.response}');`
 
     }
 

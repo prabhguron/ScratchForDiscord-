@@ -3,7 +3,7 @@ import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEd
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
-import { CodeGenerator } from "./nodeClassOOPS/CodeGenerator"
+import { CodeGenerator } from "./codeGenerator/CodeGenerator"
 import { getOrderedChain } from './codeGenerator/getConnectedChains';
 
 //nodeTypes tells React Flow which component to use for each node type

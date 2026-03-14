@@ -1,9 +1,11 @@
 import { Project, VariableDeclarationKind } from "ts-morph";
-import { getOrderedChain } from './getConnectedChains'
-import type { Node, Edge } from '@xyflow/react'
-import {createNodeInstance} from './nodeFactory'
+import JSZip from "jszip";
+import { getOrderedChain } from "./getConnectedChains";
+import { createNodeInstance } from "./nodeFactory";
+import type { Edge, Node } from "@xyflow/react";
+import { EventNode } from "../nodeClassOOPS";
 
-const projectPath = "./target"
+const projectPath = "."
 const commandPath = `${projectPath}/commands`
 
 export class CodeGenerator {
@@ -21,35 +23,60 @@ export class CodeGenerator {
         return this.instance;
     }
 
-    public save() {
-        if (this.project === undefined || this.project === null) {
-            console.log("Huh?");
-            return;
-        }
-    }
-
     // call this when user clicks "Generate Code"
     // example: CodeGenerator.getInstance().generateBotCode(nodes, edges)
     public generateBotCode(nodes: Node[], edges: Edge[]) {
         const pairs = getOrderedChain(nodes, edges)
         console.log('connected pairs:', pairs)
 
-        for(let i =0; i < pairs.length; i++){
-
-            for(let j =0; j < pairs[i].length; j++){
-               const instance = createNodeInstance(pairs[i][j])
-                console.log(instance)
-                console.log(instance.generateCode())
-                    
+        for (let i = 0; i < pairs.length; i++) {
+            let code = "";
+            let name: string = createNodeInstance(pairs[i][0]).generateCode();
+            for (let j = 1; j < pairs[i].length; j++) {
+                const instance = createNodeInstance(pairs[i][j]);
+                console.log(instance);
+                code += `${instance.generateCode()}\n`;
+            }
+            this.createCommandFile(name, name, "Idk", code);
+            console.log(code);
         }
     }
-        
-       
 
+    save = async () => {
+        const zip = new JSZip();
+        this.getDiscordBoilerplateCode();
+
+        // Get all source files from the ts-morph project
+        for (const sourceFile of this.project.getSourceFiles()) {
+            const filePath = sourceFile.getFilePath();
+            const fileText = sourceFile.getFullText();
+
+            // Strip leading slash to make paths relative inside the zip
+            const relativePath = filePath.replace(/^\//, "");
+            zip.file(relativePath, fileText);
+        }
+
+        // Generate the zip as a Blob (entirely in memory)
+        const blob = await zip.generateAsync({ type: "blob" });
+
+        // Trigger browser download
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = "discord-bot.zip";
+        anchor.click();
+
+        // Clean up the object URL after download
+        URL.revokeObjectURL(url);
+    }
+
+    testSave = () => {
+        this.createCommandFile("testing", "test", "A testing command", "await interaction.reply('testing');");
+        this.save();
     }
 
     public getDiscordBoilerplateCode() {
-        const sourceFile = this.project.createSourceFile(`${projectPath}/discord.ts`, undefined, { overwrite: true });
+        const sourceFile = this.project.createSourceFile(`${projectPath}/main.ts`, undefined, { overwrite: true });
 
         sourceFile.addImportDeclarations([
             { defaultImport: "{dirname, importx}", moduleSpecifier: "@discordx/importer" },
@@ -126,7 +153,7 @@ export class CodeGenerator {
             name: "Slash"
         });
         slashDecorator.setIsDecoratorFactory(true);
-        slashDecorator.addTypeArgument(`{\ndescription: ${description},\nname: ${commandName}`);
+        slashDecorator.addArgument(`{\ndescription: '${description}',\nname: '${commandName}'}`);
 
         funcDeclaration.addStatements(body);
 
@@ -140,4 +167,4 @@ export class CodeGenerator {
 
 }
 
-// chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]
+//chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]
