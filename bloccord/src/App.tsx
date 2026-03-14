@@ -18,8 +18,8 @@ function isValidConnection(connection: Connection): boolean {
 }
 
 // empty to start nodes are added via buttons
-const initialNodes: never[] = []
-const initialEdges: never[] = []
+const initialNodes: Node[] = []
+const initialEdges: Edge[] = []
 
 export default function App() {
   const [nodes, setNodes] = useState(initialNodes);

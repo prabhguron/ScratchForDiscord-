@@ -167,4 +167,3 @@ export class CodeGenerator {
 
 }
 
-//chain: [EventNode, ActionNode("hi"), ActionNode(emoji)]
