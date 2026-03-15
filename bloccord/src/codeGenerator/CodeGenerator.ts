@@ -3,7 +3,7 @@ import JSZip from "jszip";
 import { getOrderedChain } from "./getConnectedChains";
 import { createNodeInstance } from "./nodeFactory";
 import type { Edge, Node } from "@xyflow/react";
-import { EventNode, ConditionNode } from "../nodeClassOOPS";
+import { EventNode, ConditionNode, ActionNode } from "../nodeClassOOPS";
 
 
 const projectPath = "."
@@ -34,11 +34,19 @@ export class CodeGenerator {
             let code = "";
             let name: string = createNodeInstance(pairs[i][0]).generateCode();
             let needsClose = false;
+            let isFirstAction = true;
             for (let j = 1; j < pairs[i].length; j++) {
                 const instance = createNodeInstance(pairs[i][j]);
-                code += `${instance.generateCode()}\n`;
                 if (instance instanceof ConditionNode) {
                     needsClose = true;
+                    code += `${instance.generateCode()}\n`;
+                } else {
+                    if (isFirstAction) {
+                        code += `${instance.generateCode()}\n`;
+                        isFirstAction = false;
+                    } else {
+                        code += `await interaction.followUp('${(pairs[i][j].data as any).response}');\n`;
+                    }
                 }
             }
             if (needsClose) {
@@ -100,8 +108,7 @@ export class CodeGenerator {
             declarationKind: VariableDeclarationKind.Const,
             declarations: [{
                 name: "bot",
-                initializer: "new Client({\nintents: [\nIntentsBitField.Flags.Guilds,\n" +
-                    "IntentsBitField.Flags.GuildMessages,\nIntentsBitField.Flags.GuildMessageReactions,\n" +
+                initializer: "new Client({\nbotGuilds: ['1482394328990220420'],\nintents: [\nIntentsBitField.Flags.Guilds,\n" +                     "IntentsBitField.Flags.GuildMessages,\nIntentsBitField.Flags.GuildMessageReactions,\n" +
                     "IntentsBitField.Flags.MessageContent,\n],\nsilent: false,\nsimpleCommand: {\nprefix: '!',\n},\n});",
                 type: "Client"
             }]
