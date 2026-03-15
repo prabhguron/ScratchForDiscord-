@@ -13,7 +13,7 @@ export class ConditionNode extends BaseNode<{ checkType: string, value: string }
     generateCode(): string {
             
         
-    return `(interaction.member as GuildMember).roles.cache.map(r => r.name).includes('${this.data.value}') `;
+    return `if ((interaction.member as GuildMember).roles.cache.map(r => r.name).includes('${this.data.value}')) {`;
 
 
     }
