@@ -16,8 +16,7 @@ export function EventNodeComponent({ id }: NodeProps) {
 }}>
 
       <p style={{ fontSize: '12px', color: '#3B6D11', margin: '0 0 8px', fontWeight: 500 }}>
-        Event trigger
-        Data Event Please type your keyword command
+        Slash Command
         </p>
       <input
         value={keyword}
