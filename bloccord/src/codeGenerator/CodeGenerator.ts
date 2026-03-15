@@ -133,7 +133,7 @@ export class CodeGenerator {
                 moduleSpecifier: "discordx"
             },
             {
-                defaultImport: "{type CommandInteraction}",
+                defaultImport: "{type CommandInteraction, GuildMember}",
                 moduleSpecifier: "discord.js"
             }
         ]);
