@@ -45,7 +45,9 @@ export class CodeGenerator {
                     j++;
                 }
             }
-
+            if (code.indexOf("reply") == -1) {
+                code += "\nawait interaction.reply('Default message');"
+            }
             this.createCommandFile(name, name, "Idk", code);
             console.log(code);
         }

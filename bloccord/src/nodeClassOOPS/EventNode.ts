@@ -11,11 +11,10 @@ export class EventNode extends BaseNode<{ keyword: string }> {
 
     //if like the user types /baby this and we can later pass this into action node 
     generateCode() {
+        if (this.data.keyword.length == 0) {
+            return 'default';
+        }
         return this.data.keyword;
     }
-
-
-
-
 
 }

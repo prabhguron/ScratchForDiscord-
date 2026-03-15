@@ -54,6 +54,7 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
       </select>
       <input
         value={`${value}`}
+        required
         onChange={(e) => {
           setValue(e.target.value)
           updateNodeData(id, { value: e.target.value })

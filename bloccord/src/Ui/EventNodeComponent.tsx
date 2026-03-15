@@ -20,6 +20,7 @@ export function EventNodeComponent({ id }: NodeProps) {
         </p>
       <input
         value={keyword}
+        required
         onChange={(e) => {
           setKeyword(e.target.value)
           updateNodeData(id, { keyword: e.target.value })

@@ -10,7 +10,7 @@ export class ConditionNode extends BaseNode<{ checkType: string, value: string, 
 
     generateCode(): string {
         console.log(this.data.left, this.data.right);
-        if (this.data.left == undefined) {
+        if (this.data.left == undefined || this.data.value.length == 0) {
             return '';
         }
 
