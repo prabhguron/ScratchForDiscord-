@@ -37,9 +37,15 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
   }, [data.checkType, data.value])
 
   return (
-    <div>
+    <div style={{
+      background: '#FAEEDA',
+      border: '1px solid #EF9F27',
+      borderRadius: '8px',
+      padding: '12px 16px',
+      minWidth: '180px'
+    }}>
       <Handle type="target" position={Position.Top} id="top" />
-      <p>Conditional Statements choose</p>
+      <p style={{ fontSize: '12px', color: '#854F0B', margin: '0 0 8px', fontWeight: 500 }}>Check condition Conditional Statements choose</p>
       <select value={checkType} onChange={(e) => {
         setCheckType(e.target.value)
         updateNodeData(id, { checkType: e.target.value })
@@ -52,9 +58,8 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
         onChange={(e) => {
           setValue(e.target.value)
           updateNodeData(id, { value: e.target.value })
-        }}
-        placeholder="Condition value"
-      />
+        }} />
+      <Handle type="source" position={Position.Bottom} />
 
       <Handle type="source" position={Position.Left} id="left" />
       <Handle type="source" position={Position.Right} id="right" />
