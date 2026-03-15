@@ -3,7 +3,8 @@ import JSZip from "jszip";
 import { getOrderedChain } from "./getConnectedChains";
 import { createNodeInstance } from "./nodeFactory";
 import type { Edge, Node } from "@xyflow/react";
-import { EventNode } from "../nodeClassOOPS";
+import { EventNode, ConditionNode } from "../nodeClassOOPS";
+
 
 const projectPath = "."
 const commandPath = `${projectPath}/commands`
@@ -32,11 +33,20 @@ export class CodeGenerator {
         for (let i = 0; i < pairs.length; i++) {
             let code = "";
             let name: string = createNodeInstance(pairs[i][0]).generateCode();
+            let needsClose = false;
             for (let j = 1; j < pairs[i].length; j++) {
                 const instance = createNodeInstance(pairs[i][j]);
-                console.log(instance);
                 code += `${instance.generateCode()}\n`;
+                if (instance instanceof ConditionNode) {
+                    needsClose = true;
+                }
             }
+            if (needsClose) {
+                code += `}\n`;
+            }
+
+
+
             this.createCommandFile(name, name, "Idk", code);
             console.log(code);
         }

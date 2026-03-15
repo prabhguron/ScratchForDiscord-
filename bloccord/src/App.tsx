@@ -3,6 +3,8 @@ import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEd
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
+import { ConditionNodeComponent } from './Ui/ConditionNodeComponent';
+
 import { CodeGenerator } from "./codeGenerator/CodeGenerator"
 import { getOrderedChain } from './codeGenerator/getConnectedChains';
 
@@ -10,7 +12,8 @@ import { getOrderedChain } from './codeGenerator/getConnectedChains';
 // key must match the 'type' field on the node object
 const nodeTypes = {
   eventNode: EventNodeComponent,
-  actionNode: ActionNodeComponent
+  actionNode: ActionNodeComponent,
+  conditionNode:ConditionNodeComponent
 }
 
 function isValidConnection(connection: Connection): boolean {
@@ -44,9 +47,23 @@ export default function App() {
       position: { x: 100, y: 100 },
       data: { response: '' }
     }
-    setNodes((prev) => [...prev, newNode])
+  setNodes((prev) => [...prev, newNode])
     console.log('nodes after add:', nodes.length)
   }
+
+    const addConditionNode = () => {
+    const newNode = {
+      id: crypto.randomUUID(),
+      type: 'conditionNode',
+      position: { x: 100, y: 100 },
+      data:{ checkType: '', value: '' }
+    }
+  setNodes((prev) => [...prev, newNode])
+    console.log('nodes after add:', nodes.length)
+  }
+
+
+  
   const generator = CodeGenerator.getInstance();
   const showCode = () => {
     generator.generateBotCode(nodes, edges)
@@ -74,6 +91,7 @@ export default function App() {
         <div style={{ position: 'absolute', zIndex: 10, padding: '10px', display: 'flex', gap: '8px' }}>
           <button onClick={addEventNode}>+ Event Node</button>
           <button onClick={addActionNode}>+ Action Node</button>
+          <button onClick={addConditionNode}>+ Conditional Node</button>
           <button onClick={showCode}>Show Code</button>
           <button onClick={generator.testSave}>Save Project</button>
         </div>
