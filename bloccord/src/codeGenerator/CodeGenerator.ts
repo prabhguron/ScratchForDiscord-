@@ -3,7 +3,7 @@ import JSZip from "jszip";
 import { getOrderedChain } from "./getConnectedChains";
 import { createNodeInstance } from "./nodeFactory";
 import type { Edge, Node } from "@xyflow/react";
-import { EventNode, ConditionNode, ActionNode } from "../nodeClassOOPS";
+import { ConditionNode } from "../nodeClassOOPS";
 
 
 const projectPath = "."

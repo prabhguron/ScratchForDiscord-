@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 
 //from what i understand type=source outpint type=target input
-export function ActionNodeComponent({ data, id }: NodeProps) {
+export function ActionNodeComponent({ id }: NodeProps) {
 
   const [response, setResponse] = useState('')
   const { updateNodeData } = useReactFlow()

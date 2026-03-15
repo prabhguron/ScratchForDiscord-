@@ -2,7 +2,7 @@ import { Handle, Position, useReactFlow, type NodeProps } from '@xyflow/react'
 import { useState } from 'react'
 
 //from what i understand type=source outpint type=target input
-export function EventNodeComponent({ data, id }: NodeProps) {
+export function EventNodeComponent({ id }: NodeProps) {
 
   const [keyword, setKeyword] = useState('')
   const { updateNodeData } = useReactFlow()

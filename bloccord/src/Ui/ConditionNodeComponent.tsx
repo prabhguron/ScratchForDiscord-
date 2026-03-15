@@ -46,7 +46,7 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
     }}>
       <Handle type="target" position={Position.Top} id="top" />
       <p style={{ fontSize: '12px', color: '#854F0B', margin: '0 0 8px', fontWeight: 500 }}>Check condition Conditional Statements choose</p>
-      <select value={checkType} onChange={(e) => {
+      <select value={`${checkType}`} onChange={(e) => {
         setCheckType(e.target.value)
         updateNodeData(id, { checkType: e.target.value })
       }}>
@@ -54,7 +54,7 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
         <option value="server">Server</option>
       </select>
       <input
-        value={value}
+        value={`${value}`}
         onChange={(e) => {
           setValue(e.target.value)
           updateNodeData(id, { value: e.target.value })

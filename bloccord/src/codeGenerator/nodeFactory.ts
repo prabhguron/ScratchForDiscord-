@@ -1,5 +1,5 @@
 import { ActionNode, EventNode, ConditionNode } from "../nodeClassOOPS"
-import type { Node, Edge } from '@xyflow/react'
+import type { Node} from '@xyflow/react'
 import { BaseNode } from "../nodeClassOOPS/BaseNode"
 
 
