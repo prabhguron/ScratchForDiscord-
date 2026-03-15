@@ -22,13 +22,27 @@ Our app allows users to build Discord app commands using blocks. Once a user is 
 
 ## How We Built It
 
-We used React and React Flow to create the blocks and connections. We used TypeScript to read data from the blocks, and ts-morph to transform that data into usable TypeScript code. All the code was built to run in Discord.ts.
+We used React Flow for the visual canvas and TypeScript for type safety. Our node system uses OOP  every node type extends an abstract BaseNode class that enforces a generateCode() contract. A Factory pattern converts the visual nodes into class instances, and a Singleton CodeGenerator manages an inmemory file system using ts-morph(ts-morph to programmatically generate TypeScript files). This means adding a new node type requires zero changes to the code generation  just create the class and register it in the factory. All this makes it super easy to create more nodes.
 
 ## Challenges We Ran Into
 
-* The bot code could not be downloaded before being zipped. This was fixed by saving all the project files into memory and zipping them up from there.
-* Discord bot tokens cannot be saved without violating their TOS. We fixed this by having the user input their token after they downloaded the project files, which lost some ease of use.
-* Discord slash commands can only have one reply. We fixed this by changing all replies after the first to a followUp.
+<ul>
+<li>
+The bot code could not be downloaded before being zipped. This was fixed by saving all the project files into memory and zipping them up from there.
+</li>
+<li>
+Discord only allows one interaction.reply() per command, so chaining multiple ActionNodes would crash the bot. We solved this by having CodeGenerator detect the first action vs subsequent actions and generate reply vs followUp accordingly. 
+</li>
+<li>
+We also struggled with closing braces inside of conditions. ConditionNode generates an opening curly brace in the if statement, but we had to figure out where to close it. We decided CodeGenerator owns the structure, so it simply references the left and right nodes of it.
+</li>
+<li>
+For nodes to stay abstract, each different kind of node takes a different class.
+</li>
+<li>
+We initially had too much coupling in our code, so we started coding more abstract and making sure nothing depended on each other allowing us to easily create more features. This is when we started properly using OOP principles.
+</li>
+</ul>
 
 ## Edge Cases
 
@@ -44,7 +58,7 @@ We learned how to use TypeScript with React. We learned about using React Flow t
 
 ## What's Next for Bloccord?
 
-We want to add more kinds of blocks to the user interface, such as message listeners, emoji reactions, loops, variables, and more. We would also like to make the bot runnable from the web browser to make setup even easier for the end-user. It would also be great if we could make the bot exportable to more than just TypeScript, such as Python or Java. 
+We want to add more kinds of blocks to the user interface, such as message listeners, emoji reactions, loops, variables, and more. We would also like to make the bot runnable from the web browser to make setup even easier for the end-user. It would also be great if we could make the bot exportable to more than just TypeScript, such as Python or Java.
 
 ---
 
@@ -129,7 +143,7 @@ There is a video showing how to create a basic command [here](). Alternatively, 
 * I get an error running the bot that dotenv / BOT_TOKEN is not found
   * Run `npm i dotenv `inside the Discord project folder, and make sure you have a .env file with your bot token inside in the format of `BOT_TOKEN="REPLACE WITH YOUR TOKEN"`
 * My old slash commands are still registered
-  * Just above ```await importx(\`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}\`);``` add these lines:
+  * Just above ``await importx(\`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}\`);`` add these lines:
 
     ```ts
     await bot.clearApplicationCommands(
