@@ -48,8 +48,7 @@ export class CodeGenerator {
             if (code.indexOf("reply") == -1) {
                 code += "\nawait interaction.reply('Default message');"
             }
-            this.createCommandFile(name, name, "Idk", code);
-            console.log(code);
+            this.createCommandFile(name, name.toLowerCase(), "A slash command generated with Bloccord", code);
         }
     }
 
