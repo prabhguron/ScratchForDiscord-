@@ -230,6 +230,17 @@ export default function App() {
               fontWeight: 500,
               color: '#555'
             }}>{generatedCode ? 'Copy' : 'Generate'}</button>
+            <button onClick={showCode} style={{
+              background: '#f4f3ec',
+              border: '1px solid #d3d1c7',
+              borderRadius: '6px',
+              padding: '3px 10px',
+              cursor: 'pointer',
+              fontSize: '11px',
+              fontWeight: 500,
+              color: '#555',
+              display: `${generatedCode ? 'block' : 'none'}`
+            }}>{'Generate'}</button>
           </div>
           <div style={{
             flex: 1,
