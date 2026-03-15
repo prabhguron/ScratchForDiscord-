@@ -191,4 +191,16 @@
 .react-flow__handle {
   min-width: 0.75vw;
   min-height: 1.5vh;
+  display: flex;
+  text-align: center;
+}
+
+.conditionalText {
+  color: white;
+  left: 4px;
+  bottom: -4px;
+  display: flex;
+  text-align: center;
+  position: absolute;
+  font-size: small;
 }

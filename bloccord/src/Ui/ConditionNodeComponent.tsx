@@ -59,11 +59,11 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
           setValue(e.target.value)
           updateNodeData(id, { value: e.target.value })
         }} />
-
+  
         
-      <Handle type="source" position={Position.Left} id="left"  style={{ backgroundColor: 'green' }}></Handle>
+      <Handle type="source" position={Position.Left} id="left"  style={{ backgroundColor: 'green' }}><p className='conditionalText'>T</p></Handle>
       
-      <Handle type="source" position={Position.Right} id="right" style={{ backgroundColor: 'red' }}></Handle>
+      <Handle type="source" position={Position.Right} id="right" style={{ backgroundColor: 'red', textAlign: 'start'}}><p className='conditionalText'>F</p></Handle>
     </div>
   )
 }
