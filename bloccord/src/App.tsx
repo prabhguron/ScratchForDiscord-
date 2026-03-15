@@ -14,7 +14,7 @@ const nodeTypes = {
   conditionNode: ConditionNodeComponent
 }
 
-function isValidConnection(connection: Connection): boolean {
+function isValidConnection(connection: Edge | Connection): boolean {
   return connection.source !== connection.target
 }
 
