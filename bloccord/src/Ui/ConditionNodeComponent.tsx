@@ -59,7 +59,6 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
           setValue(e.target.value)
           updateNodeData(id, { value: e.target.value })
         }} />
-      <Handle type="source" position={Position.Bottom} />
 
       <Handle type="source" position={Position.Left} id="left" />
       <Handle type="source" position={Position.Right} id="right" />

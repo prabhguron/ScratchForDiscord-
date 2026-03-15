@@ -36,7 +36,14 @@ export class CodeGenerator {
             let name: string = createNodeInstance(pairs[i][0]).generateCode();
             for (let j = 1; j < pairs[i].length; j++) {
                 const instance = createNodeInstance(pairs[i][j]);
-                code += `${instance.generateCode()}\n`;
+                let newCode = instance.generateCode();
+                if (code.indexOf("reply") != -1) {
+                    newCode = newCode.replace("reply", "followUp");
+                }
+                code += `${newCode}\n`;
+                if (instance instanceof ConditionNode) {
+                    j++;
+                }
             }
 
             this.createCommandFile(name, name, "Idk", code);
