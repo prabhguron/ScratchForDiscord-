@@ -182,3 +182,13 @@
     border-right-color: var(--border);
   }
 }
+
+.react-flow__edge path {
+  stroke-width: 3px ; 
+  stroke: #292929;
+}
+
+.react-flow__handle {
+  min-width: 0.75vw;
+  min-height: 1.5vh;
+}

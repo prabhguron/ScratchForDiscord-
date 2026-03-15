@@ -4,7 +4,7 @@ import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';
 import { ConditionNodeComponent } from './Ui/ConditionNodeComponent';
-
+import './App.css';
 import { CodeGenerator } from "./codeGenerator/CodeGenerator"
 import { getOrderedChain } from './codeGenerator/getConnectedChains';
 
