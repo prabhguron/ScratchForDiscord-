@@ -9,9 +9,15 @@ export function ActionNodeComponent({ data, id }: NodeProps) {
   const [response, setResponse] = useState('')
   const { updateNodeData } = useReactFlow()
   return (
-    <div>
+    <div style={{
+      background: '#E6F1FB',
+      border: '1px solid #85B7EB',
+      borderRadius: '8px',
+      padding: '12px 16px',
+      minWidth: '180px'
+                      }}>
       <Handle type="target" isConnectableStart={false} position={Position.Top}/>
-      <p>Action</p>
+      <p style={{ fontSize: '12px', color: '#185FA5', margin: '0 0 8px', fontWeight: 500 }}>Output</p>
       <input
         value={response}
         onChange={(e) => {

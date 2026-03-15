@@ -8,9 +8,15 @@ export function ConditionNodeComponent({ data, id }: NodeProps) {
   const [value, setValue] = useState('')
   const { updateNodeData } = useReactFlow()
   return (
-    <div>
+    <div style={{
+              background: '#FAEEDA',
+          border: '1px solid #EF9F27',
+          borderRadius: '8px',
+          padding: '12px 16px',
+           minWidth: '180px'
+            }}>
 <Handle type="target" position={Position.Top}/>
-      <p>Conditional Statements choose</p>
+      <p style={{ fontSize: '12px', color: '#854F0B', margin: '0 0 8px', fontWeight: 500 }}>Check condition Conditional Statements choose</p>
            <select value={checkType} onChange={(e) => {
                 setCheckType(e.target.value)
                 updateNodeData(id, { checkType: e.target.value } )
