@@ -11,7 +11,7 @@ const commandPath = `${projectPath}/commands`
 
 export class CodeGenerator {
     private static instance: CodeGenerator | null = null
-    public readonly project: Project = new Project({
+    public project: Project = new Project({
         useInMemoryFileSystem: true,
 
     });
@@ -27,25 +27,17 @@ export class CodeGenerator {
     // call this when user clicks "Generate Code"
     // example: CodeGenerator.getInstance().generateBotCode(nodes, edges)
     public generateBotCode(nodes: Node[], edges: Edge[]) {
+        this.project = new Project({useInMemoryFileSystem: true});
         const pairs = getOrderedChain(nodes, edges)
         console.log('connected pairs:', pairs)
 
         for (let i = 0; i < pairs.length; i++) {
             let code = "";
             let name: string = createNodeInstance(pairs[i][0]).generateCode();
-            let needsClose = false;
             for (let j = 1; j < pairs[i].length; j++) {
                 const instance = createNodeInstance(pairs[i][j]);
                 code += `${instance.generateCode()}\n`;
-                if (instance instanceof ConditionNode) {
-                    needsClose = true;
-                }
             }
-            if (needsClose) {
-                code += `}\n`;
-            }
-
-
 
             this.createCommandFile(name, name, "Idk", code);
             console.log(code);
