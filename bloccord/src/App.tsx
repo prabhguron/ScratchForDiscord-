@@ -13,7 +13,7 @@ import { getOrderedChain } from './codeGenerator/getConnectedChains';
 const nodeTypes = {
   eventNode: EventNodeComponent,
   actionNode: ActionNodeComponent,
-  conditionNode:ConditionNodeComponent
+  conditionNode: ConditionNodeComponent
 }
 
 function isValidConnection(connection: Connection): boolean {
@@ -47,29 +47,34 @@ export default function App() {
       position: { x: 100, y: 100 },
       data: { response: '' }
     }
-  setNodes((prev) => [...prev, newNode])
+    setNodes((prev) => [...prev, newNode])
     console.log('nodes after add:', nodes.length)
   }
 
-    const addConditionNode = () => {
+  const addConditionNode = () => {
     const newNode = {
       id: crypto.randomUUID(),
       type: 'conditionNode',
       position: { x: 100, y: 100 },
-      data:{ checkType: '', value: '' }
+      data: { checkType: '', value: '' }
     }
-  setNodes((prev) => [...prev, newNode])
+    setNodes((prev) => [...prev, newNode])
     console.log('nodes after add:', nodes.length)
   }
 
 
-  
+
   const generator = CodeGenerator.getInstance();
   const showCode = () => {
     generator.generateBotCode(nodes, edges)
     const boilerplate = CodeGenerator.getInstance().getDiscordBoilerplateCode()
     window.alert(boilerplate)
     console.log(getOrderedChain(nodes, edges))
+  }
+
+  const saveCode = () => {
+    generator.generateBotCode(nodes, edges)
+    generator.save();
   }
 
   const onNodesChange = useCallback(
@@ -86,32 +91,32 @@ export default function App() {
   );
 
   return (
-      <ReactFlowProvider>
-        {/* toolbar sits above canvas using absolute positioning */}
-        <div style={{ position: 'absolute', zIndex: 10, padding: '10px', display: 'flex', gap: '8px' }}>
-          <button onClick={addEventNode}>+ Event Node</button>
-          <button onClick={addActionNode}>+ Action Node</button>
-          <button onClick={addConditionNode}>+ Conditional Node</button>
-          <button onClick={showCode}>Show Code</button>
-          <button onClick={generator.testSave}>Save Project</button>
-        </div>
+    <ReactFlowProvider>
+      {/* toolbar sits above canvas using absolute positioning */}
+      <div style={{ position: 'absolute', zIndex: 10, padding: '10px', display: 'flex', gap: '8px' }}>
+        <button onClick={addEventNode}>+ Event Node</button>
+        <button onClick={addActionNode}>+ Action Node</button>
+        <button onClick={addConditionNode}>+ Conditional Node</button>
+        <button onClick={showCode}>Show Code</button>
+        <button onClick={saveCode}>Save Project</button>
+      </div>
 
-        <div style={{ height: '100vh' }}>
-          <ReactFlow
-            nodeTypes={nodeTypes}
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            isValidConnection={isValidConnection}
-            fitView
-          >
-            <Background />
-            <Controls />
-          </ReactFlow>
-        </div>
-      </ReactFlowProvider>
+      <div style={{ height: '100vh' }}>
+        <ReactFlow
+          nodeTypes={nodeTypes}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          isValidConnection={isValidConnection}
+          fitView
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
+      </div>
+    </ReactFlowProvider>
 
   )
 }
