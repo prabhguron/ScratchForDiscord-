@@ -3,7 +3,7 @@ import JSZip from "jszip";
 import { getOrderedChain } from "./getConnectedChains";
 import { createNodeInstance } from "./nodeFactory";
 import type { Edge, Node } from "@xyflow/react";
-import { EventNode, ConditionNode } from "../nodeClassOOPS";
+import { EventNode, ConditionNode, ActionNode } from "../nodeClassOOPS";
 
 
 const projectPath = "."
@@ -99,8 +99,7 @@ export class CodeGenerator {
             declarationKind: VariableDeclarationKind.Const,
             declarations: [{
                 name: "bot",
-                initializer: "new Client({\nintents: [\nIntentsBitField.Flags.Guilds,\n" +
-                    "IntentsBitField.Flags.GuildMessages,\nIntentsBitField.Flags.GuildMessageReactions,\n" +
+                initializer: "new Client({\nbotGuilds: ['1482394328990220420'],\nintents: [\nIntentsBitField.Flags.Guilds,\n" +                     "IntentsBitField.Flags.GuildMessages,\nIntentsBitField.Flags.GuildMessageReactions,\n" +
                     "IntentsBitField.Flags.MessageContent,\n],\nsilent: false,\nsimpleCommand: {\nprefix: '!',\n},\n});",
                 type: "Client"
             }]
