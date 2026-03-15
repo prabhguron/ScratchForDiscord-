@@ -96,8 +96,8 @@ These steps will guide you through your bot creation journey. These steps should
 There is a video showing how to create a basic command [here](). Alternatively, follow the text instructions below.
 
 1. Navigate to [Bloccord](https://bloccord.vercel.app/)
-2. Note the website layout
-   INSERT LAYOUT IMAGE HERE
+2. Note the website layout ![1762680706351](images/layout.png?raw=true)
+   
 3. Create a new slash command by creating a new *Event trigger* block
 4. Enter the command name in the block's input
 5. Add a response by creating a new *Action* block
