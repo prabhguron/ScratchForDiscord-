@@ -2,9 +2,9 @@
 
 Ever wanted to make a Discord bot, but don't want to learn how to code? Tired of having AI generate all your code? Then **Bloccord** is for you!
 
-Built for *BCIT's* **HackTheBreak 2026**, this project combines **React**, **React Flow, Typescript**, **ts-morph**, and **Discord.ts** to streamline your bot creation using simple blocks.
+Built for *BCIT's* **HackTheBreak 2026**, this project combines **React**, **React Flow**, **TypeScript**, **ts-morph**, and **Discord.ts** to streamline your bot creation using simple blocks.
 
-This project was made with 2 members.
+This project was made with 2 members in CST Term 3.
 
 ---
 
@@ -22,11 +22,13 @@ Our app allows users to build Discord app commands using blocks. Once a user is 
 
 ## How We Built It
 
-We used React and React Flow to create the blocks and connections. We used typescript to read data from the blocks, and ts-morph to transform that data into usable typescript code.
+We used React and React Flow to create the blocks and connections. We used TypeScript to read data from the blocks, and ts-morph to transform that data into usable TypeScript code. All the code was built to run in Discord.ts.
 
 ## Challenges We Ran Into
 
-TODO
+* The bot code could not be downloaded before being zipped. This was fixed by saving all the project files into memory and zipping them up from there.
+* Discord bot tokens cannot be saved without violating their TOS. We fixed this by having the user input their token after they downloaded the project files, which lost some ease of use.
+* Discord slash commands can only have one reply. We fixed this by changing all replies after the first to a followUp.
 
 ## Edge Cases
 
@@ -34,15 +36,15 @@ TODO
 
 ## Accomplishments That We're Proud Of
 
-TODO
+We made a fully functioning system to translate blocks into usable TypeScript code while following OOP principles. Neither of us were very familiar with React, and we managed to pull off a system that is both functional and aesthetically pleasing. The system came out exactly as planned, and has very few limitations. The system is also modular, which makes it incredibly easy to add more features later down the road.
 
 ## What We Learned
 
-TODO
+We learned how to use TypeScript with React. We learned about using React Flow to create user-friendly diagrams. We also learned how to dynamically create code files with ts-morph.
 
 ## What's Next for Bloccord?
 
-TODO
+We want to add more kinds of blocks to the user interface, such as message listeners, emoji reactions, loops, variables, and more. We would also like to make the bot runnable from the web browser to make setup even easier for the end-user. It would also be great if we could make the bot exportable to more than just TypeScript, such as Python or Java. 
 
 ---
 
@@ -97,7 +99,6 @@ There is a video showing how to create a basic command [here](). Alternatively, 
 
 1. Navigate to [Bloccord](https://bloccord.vercel.app/)
 2. Note the website layout ![1762680706351](images/layout.png?raw=true)
-   
 3. Create a new slash command by creating a new *Event trigger* block
 4. Enter the command name in the block's input
 5. Add a response by creating a new *Action* block
@@ -109,7 +110,9 @@ There is a video showing how to create a basic command [here](). Alternatively, 
 ### 4. Importing Bloccord Code to your Project
 
 1. Extract the contents of the .zip file into the src file in your Discord project folder.
-2. That's it.
+2. Inside the src/main.ts file, either replace the guild ID in `botGuilds`with your bot's guild id (find out how to do that [here](https://cybrancee.com/learn/knowledge-base/how-to-find-a-discord-guild-id/)), or remove the line entirely. Note that removing the line will make slash commands register much slower.
+
+**!! Note: you do NOT have to replace your main.ts everytime you import code, just the first time you run !!**
 
 ### 5. Running the Code
 
@@ -120,3 +123,16 @@ There is a video showing how to create a basic command [here](). Alternatively, 
 **!! Note: sometimes new commands can take 5-10 minutes to register, this is normal !!**
 
 ### Troubleshooting
+
+* When running `npx create-discordx`, it's giving an error that the command is not found
+  * Ensure you have [Node.js](https://nodejs.org/en/download/), and that it's on your system PATH.
+* I get an error running the bot that dotenv / BOT_TOKEN is not found
+  * Run `npm i dotenv `inside the Discord project folder, and make sure you have a .env file with your bot token inside in the format of `BOT_TOKEN="REPLACE WITH YOUR TOKEN"`
+* My old slash commands are still registered
+  * Just above ```await importx(\`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}\`);``` add these lines:
+
+    ```ts
+    await bot.clearApplicationCommands(
+        ...bot.guilds.cache.map((g) => g.id)
+    );
+    ```
