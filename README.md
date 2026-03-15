@@ -139,7 +139,7 @@ There is a video showing how to create a basic command [here](). Alternatively, 
 1. Inside of the Discord project folder, open a terminal
 2. Run `npm run dev` in the terminal
 3. Your bot should now be online, test it out!
-![bot running](image/bot_running.png?raw=true)
+![bot running](images/bot_running.png?raw=true)
 
 **!! Note: sometimes new commands can take 5-10 minutes to register, this is normal !!**
 
