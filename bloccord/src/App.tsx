@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEdge, type Connection, Background, Controls, type Edge } from '@xyflow/react';
+import { ReactFlow, ReactFlowProvider, applyNodeChanges, applyEdgeChanges, addEdge, type Connection, Background, Controls, type Edge,type Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css'
 import { EventNodeComponent } from './Ui/EventNodeComponent'
 import { ActionNodeComponent } from './Ui/ActionNodeComponent';

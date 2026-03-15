@@ -1,7 +1,6 @@
 import {BaseNode} from './BaseNode'
 
 
-//well oop doesnt let actionNode know /baby
 export class ConditionNode extends BaseNode<{ checkType: string, value: string }>{
 
        constructor(id: string, label: string, version: number, data: { checkType: string, value: string })

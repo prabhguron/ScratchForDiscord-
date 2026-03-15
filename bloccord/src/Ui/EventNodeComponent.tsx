@@ -16,7 +16,7 @@ export function EventNodeComponent({ data, id }: NodeProps) {
           setKeyword(e.target.value)
           updateNodeData(id, { keyword: e.target.value })
         }}
-        placeholder="Type command e.g. /baby"
+        placeholder="Type command e.g. baby no /"
       />
 
 
