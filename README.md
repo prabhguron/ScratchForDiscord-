@@ -99,7 +99,7 @@ These steps will guide you through your bot creation journey. These steps should
 3. In the terminal, run `npx create-discordx`
 4. Enter a project name, or leave blank to name it 'my-bot'
 5. Pick 'npm' as your package manager by using your arrow keys to navigate and 'Enter' or 'Return' to select.
-6. Choose the 'blank' template, and wait for everything to download. Once finished, you should see `√ Created discordx project`
+6. Choose the 'blank' template, and wait for everything to download. Once finished, you should see something similar to the following image
 7. Navigate the terminal to inside the project folder, which is named whatever you called it in step 4
 8. Run `npm i dotenv`
 9. Create a new file called .env
@@ -114,10 +114,10 @@ There is a video showing how to create a basic command [here](). Alternatively, 
 1. Navigate to [Bloccord](https://bloccord.vercel.app/)
 2. Note the website layout ![1762680706351](images/layout.png?raw=true)
 3. Create a new slash command by creating a new *Event trigger* block
-4. Enter the command name in the block's input
+4. Enter the command name in the block's input. Note that you do NOT put in the / at the start
 5. Add a response by creating a new *Action* block
 6. Enter the response content in the block's input
-7. Connect the bottom handle of the *Event Trigger* to the top of the *Action* block to execute the code once the command is entered.
+7. Connect the bottom handle of the *Event Trigger* to the top of the *Action* block to execute the code once the command is entered. The end result should look like the following
 8. Congratulations, you've made your first slash command!
 9. Once you've finished developing commands, click *Save project* to download the code as a .zip file
 
