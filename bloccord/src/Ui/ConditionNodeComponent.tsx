@@ -5,8 +5,8 @@ import { createNodeInstance } from '../codeGenerator/nodeFactory'
 //from what i understand type=source output type=target input
 export function ConditionNodeComponent({ data, id }: NodeProps) {
 
-  const [checkType, setCheckType] = useState(data.checkType ?? '')
-  const [value, setValue] = useState(data.value ?? '')
+const [checkType, setCheckType] = useState('role')  
+const [value, setValue] = useState(data.value ?? '')
   const { updateNodeData, getNode } = useReactFlow()
 
   const leftConnections: NodeConnection[] = useNodeConnections({ handleType: 'source', handleId: 'left' })
